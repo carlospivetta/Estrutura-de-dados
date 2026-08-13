@@ -1,0 +1,35 @@
+class produto:
+    def __init__(self, nome, preco, quantidade_estoque):
+        self.nome = nome
+        self.preco = preco
+        self.quantidade_estoque = quantidade_estoque
+    def exibir_informacoes(self):
+        print('nome:', self.nome)
+        print('preco:', self.preco)
+        print('quantidade em estoque:', self.quantidade_estoque)
+    def adicionar_estoque(self, quantidade):
+        self.quantidade_estoque += quantidade
+        print("novo estoque:", self.quantidade_estoque)
+    def realizar_venda(self, quantidade):
+        if quantidade <= self.quantidade_estoque:
+            self.quantidade_estoque -= quantidade
+            print("venda realizada com sucesso!")
+        else:
+            print("estoque insuficiente para realizar a venda.")
+    def calcular_valor_total_estoque(self):
+        valor_total = self.preco * self.quantidade_estoque
+        print("valor total do estoque:", valor_total)
+produto1 = produto("camisa", 50, 10)
+produto2 = produto("calça", 80, 5)
+produto3 = produto("sapato", 120, 8)
+
+produto1.exibir_informacoes()
+
+produto1.realizar_venda(3)
+produto1.realizar_venda(8)
+produto2.adicionar_estoque(10)
+
+print(" --- Informaçoes atualizadas ---")
+produto1.calcular_valor_total_estoque()
+produto2.exibir_informacoes()
+produto3.exibir_informacoes()

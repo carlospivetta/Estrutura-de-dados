@@ -1,0 +1,16 @@
+class No:
+    def __init__(self, info):
+        self.info = info
+        self.prox = None  # Ponteiro para o próximo nó
+
+def maiores(lst, n):
+
+    contador = 0
+    atual = lst
+    
+    while atual is not None:
+        if atual.info > n:
+            contador += 1
+        atual = atual.prox  # Avança para o próximo nó
+        
+    return contador

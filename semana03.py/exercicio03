@@ -1,13 +1,29 @@
+class No:
+    def __init__(self, info):
+        self.info = info
+        self.prox = None
+
+
 def ultimo(lista):
-   
-    if lista is None:
+    if lista == None:
         return None
-        
-    atual = lista
-    
-  
-    while atual.prox is not None:
-        atual = atual.prox
-        
-   
-    return atual
+
+    p = lista
+
+    while p.prox != None:
+        p = p.prox
+
+    return p
+
+
+# lista encadeada
+lista = No(10)
+lista.prox = No(20)
+lista.prox.prox = No(30)
+lista.prox.prox.prox = No(40)
+
+
+# Chamando a função
+resultado = ultimo(lista)
+
+print("Último valor da lista:", resultado.info)

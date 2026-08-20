@@ -1,0 +1,14 @@
+def ultimo(lista):
+
+    # Se a lista estiver vazia, não há último nó para retornar
+    if lista is None:
+        return None
+        
+    atual = lista
+    
+  
+    while atual.prox is not None:
+        atual = atual.prox
+        
+    # Quando atual.prox for None, 'atual' é o último nó
+    return atual

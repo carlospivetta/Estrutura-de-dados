@@ -1,0 +1,39 @@
+class No:
+    def __init__(self, info):
+        self.info = info
+        self.prox = None
+
+
+def lista_altera(lst):
+    p = lst
+
+    while p != None:
+        if p.info > 0:
+            p.info = -p.info
+        elif p.info < 0:
+            p.info = -p.info
+
+        p = p.prox
+
+
+lst = No(10)
+lst.prox = No(-20)
+lst.prox.prox = No(30)
+lst.prox.prox.prox = No(-40)
+
+print("Antes:")
+p = lst
+
+while p != None:
+    print(p.info)
+    p = p.prox
+
+lista_altera(lst)
+
+print("Depois:")
+p = lst
+
+while p != None:
+    print(p.info)
+    p = p.prox
+    

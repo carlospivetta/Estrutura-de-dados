@@ -1,0 +1,43 @@
+class No:
+    def __init__(self, info):
+        self.info = info
+        self.prox = None
+
+
+def lista_insere_final(lst, valor):
+    novo = No(valor)
+
+   
+    if lst == None:
+        return novo
+
+    
+    p = lst
+
+    while p.prox != None:
+        p = p.prox
+
+    
+    p.prox = novo
+
+    return lst
+
+
+
+lst = None
+
+# valores no final
+lst = lista_insere_final(lst, 10)
+lst = lista_insere_final(lst, 20)
+lst = lista_insere_final(lst, 30)
+lst = lista_insere_final(lst, 40)
+
+
+
+print("Lista:")
+
+p = lst
+
+while p != None:
+    print(p.info)
+    p = p.prox

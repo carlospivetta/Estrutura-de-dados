@@ -3,13 +3,27 @@ class No:
         self.info = info
         self.prox = None
 
+
 def maiores(lst, n):
-    contador = 0
-    atual = lst
-    
-    while atual is not None:
-        if atual.info > n:
-            contador += 1
-        atual = atual.prox
-        
-    return contador
+    cont = 0
+    p = lst
+
+    while p != None:
+        if p.info > n:
+            cont += 1
+        p = p.prox
+
+    return cont
+
+
+# lista: 10 -> 25 -> 30 -> 5
+lst = No(10)
+lst.prox = No(25)
+lst.prox.prox = No(30)
+lst.prox.prox.prox = No(5)
+
+n = int(input("Digite um valor: "))
+
+resultado = maiores(lst, n)
+
+print("Quantidade de valores maiores:", resultado)

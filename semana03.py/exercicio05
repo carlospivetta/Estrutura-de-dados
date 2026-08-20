@@ -1,0 +1,32 @@
+class No:
+    def __init__(self, info):
+        self.info = info
+        self.prox = None
+
+
+def lista_calcula_media(lst):
+    if lst == None:
+        return 0
+
+    soma = 0
+    quantidade = 0
+    p = lst
+
+    while p != None:
+        soma += p.info
+        quantidade += 1
+        p = p.prox
+
+    return soma / quantidade
+
+
+lst = No(10)
+lst.prox = No(20)
+lst.prox.prox = No(30)
+lst.prox.prox.prox = No(40)
+
+
+
+media = lista_calcula_media(lst)
+
+print("Média:", media)

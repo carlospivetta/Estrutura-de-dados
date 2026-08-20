@@ -1,16 +1,15 @@
 class No:
     def __init__(self, info):
         self.info = info
-        self.prox = None 
+        self.prox = None
 
 def maiores(lst, n):
-
     contador = 0
     atual = lst
     
     while atual is not None:
         if atual.info > n:
             contador += 1
-        atual = atual.prox 
+        atual = atual.prox
         
     return contador

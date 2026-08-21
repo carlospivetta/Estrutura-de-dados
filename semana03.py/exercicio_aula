@@ -1,0 +1,170 @@
+class No:
+    def __init__(self, id, nome, nota):
+        self.id = id
+        self.nome = nome
+        self.nota = nota
+        self.anterior = None
+        self.proximo = None
+
+
+class ListaDuplamenteEncadeada:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    def inserir(self, id, nome, nota):
+        novo = No(id, nome, nota)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+        else:
+            novo.anterior = self.fim
+            self.fim.proximo = novo
+            self.fim = novo
+
+    def listar(self):
+        if self.inicio is None:
+            print("Nenhum aluno cadastrado.")
+            return
+
+        atual = self.inicio
+
+        while atual is not None:
+            print("ID:", atual.id)
+            print("Nome:", atual.nome)
+            print("Nota:", atual.nota)
+            print("--------------------")
+            atual = atual.proximo
+
+    def remover(self, id):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.id == id:
+
+                if atual.anterior is None:
+                    self.inicio = atual.proximo
+                else:
+                    atual.anterior.proximo = atual.proximo
+
+                if atual.proximo is None:
+                    self.fim = atual.anterior
+                else:
+                    atual.proximo.anterior = atual.anterior
+
+                print("Aluno removido com sucesso.")
+                return
+
+            atual = atual.proximo
+
+        print("Aluno não encontrado.")
+
+    def buscar(self, id):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.id == id:
+                print("Aluno encontrado!")
+                print("ID:", atual.id)
+                print("Nome:", atual.nome)
+                print("Nota:", atual.nota)
+                return
+
+            atual = atual.proximo
+
+        print("Aluno não encontrado.")
+
+    def listar_classificados(self, tipo):
+        atual = self.inicio
+        encontrou = False
+
+        while atual is not None:
+
+            if tipo == 1 and atual.nota >= 7:
+                print("ID:", atual.id)
+                print("Nome:", atual.nome)
+                print("Nota:", atual.nota)
+                print("--------------------")
+                encontrou = True
+
+            elif tipo == 2 and atual.nota >= 4 and atual.nota < 7:
+                print("ID:", atual.id)
+                print("Nome:", atual.nome)
+                print("Nota:", atual.nota)
+                print("--------------------")
+                encontrou = True
+
+            elif tipo == 3 and atual.nota < 4:
+                print("ID:", atual.id)
+                print("Nome:", atual.nome)
+                print("Nota:", atual.nota)
+                print("--------------------")
+                encontrou = True
+
+            atual = atual.proximo
+
+        if not encontrou:
+            print("Nenhum aluno encontrado nessa categoria.")
+
+
+lista = ListaDuplamenteEncadeada()
+
+while True:
+    print("\n===== MENU PRINCIPAL =====")
+    print("1. Inserir aluno")
+    print("2. Listar alunos")
+    print("3. Remover aluno")
+    print("4. Buscar aluno")
+    print("5. Listar alunos por situação")
+    print("6. Sair")
+
+    opcao = int(input("Digite uma opção: "))
+
+    if opcao == 1:
+        id = int(input("Digite o ID do aluno: "))
+        nome = input("Digite o nome do aluno: ")
+        nota = float(input("Digite a nota final: "))
+
+        lista.inserir(id, nome, nota)
+        print("Aluno inserido com sucesso.")
+
+    elif opcao == 2:
+        lista.listar()
+
+    elif opcao == 3:
+        id = int(input("Digite o ID do aluno que deseja remover: "))
+        lista.remover(id)
+
+    elif opcao == 4:
+        id = int(input("Digite o ID do aluno que deseja buscar: "))
+        lista.buscar(id)
+
+    elif opcao == 5:
+        print("\n1. Aprovado")
+        print("2. Exame")
+        print("3. Reprovado")
+
+        tipo = int(input("Digite uma opção: "))
+
+        if tipo == 1:
+            print("\n===== APROVADOS =====")
+            lista.listar_classificados(1)
+
+        elif tipo == 2:
+            print("\n===== EXAME =====")
+            lista.listar_classificados(2)
+
+        elif tipo == 3:
+            print("\n===== REPROVADOS =====")
+            lista.listar_classificados(3)
+
+        else:
+            print("Opção inválida.")
+
+    elif opcao == 6:
+        print("Programa encerrado.")
+        break
+
+    else:
+        print("Opção inválida.")

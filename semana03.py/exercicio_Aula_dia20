@@ -1,0 +1,201 @@
+class No:
+    def __init__(self, id_musica, nome, artista, duracao):
+        self.id = id_musica
+        self.nome = nome
+        self.artista = artista
+        self.duracao = duracao
+        self.anterior = None
+        self.proximo = None
+
+
+class Playlist:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+        self.atual = None
+
+    def adicionar(self, id_musica, nome, artista, duracao):
+        novo = No(id_musica, nome, artista, duracao)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+            self.atual = novo
+        else:
+            novo.anterior = self.fim
+            self.fim.proximo = novo
+            self.fim = novo
+
+        print("Música adicionada com sucesso!")
+
+    def listar(self):
+        if self.inicio is None:
+            print("A playlist está vazia.")
+            return
+
+        atual = self.inicio
+
+        print("\n--- PLAYLIST ---")
+
+        while atual is not None:
+            print("ID:", atual.id)
+            print("Música:", atual.nome)
+            print("Artista:", atual.artista)
+            print("Duração:", atual.duracao, "minutos")
+            print("--------------------")
+
+            atual = atual.proximo
+
+    def remover(self, id_musica):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.id == id_musica:
+
+                if atual.anterior is not None:
+                    atual.anterior.proximo = atual.proximo
+                else:
+                    self.inicio = atual.proximo
+
+                if atual.proximo is not None:
+                    atual.proximo.anterior = atual.anterior
+                else:
+                    self.fim = atual.anterior
+
+                if self.atual == atual:
+                    if atual.proximo is not None:
+                        self.atual = atual.proximo
+                    else:
+                        self.atual = atual.anterior
+
+                print("Música removida com sucesso!")
+                return
+
+            atual = atual.proximo
+
+        print("Música não encontrada.")
+
+    def buscar(self, texto):
+        if self.inicio is None:
+            print("A playlist está vazia.")
+            return
+
+        atual = self.inicio
+        encontrou = False
+
+        while atual is not None:
+            if (texto.lower() in atual.nome.lower() or
+                    texto.lower() in atual.artista.lower()):
+
+                print("\nID:", atual.id)
+                print("Música:", atual.nome)
+                print("Artista:", atual.artista)
+                print("Duração:", atual.duracao, "minutos")
+
+                encontrou = True
+
+            atual = atual.proximo
+
+        if not encontrou:
+            print("Nenhuma música encontrada.")
+
+    def duracao_total(self):
+        atual = self.inicio
+        total = 0
+
+        while atual is not None:
+            total += atual.duracao
+            atual = atual.proximo
+
+        print("Duração total da playlist:", total, "minutos")
+
+    def avancar(self):
+        if self.atual is None:
+            print("A playlist está vazia.")
+            return
+
+        if self.atual.proximo is not None:
+            self.atual = self.atual.proximo
+            print("\nTocando agora:")
+            print(self.atual.nome, "-", self.atual.artista)
+        else:
+            print("Você já está na última música.")
+
+    def voltar(self):
+        if self.atual is None:
+            print("A playlist está vazia.")
+            return
+
+        if self.atual.anterior is not None:
+            self.atual = self.atual.anterior
+            print("\nTocando agora:")
+            print(self.atual.nome, "-", self.atual.artista)
+        else:
+            print("Você já está na primeira música.")
+
+    def mostrar_atual(self):
+        if self.atual is None:
+            print("A playlist está vazia.")
+        else:
+            print("\nMúsica atual:")
+            print("ID:", self.atual.id)
+            print("Música:", self.atual.nome)
+            print("Artista:", self.atual.artista)
+            print("Duração:", self.atual.duracao, "minutos")
+
+
+playlist = Playlist()
+
+while True:
+    print("\n===== MENU PLAYLIST =====")
+    print("1. Adicionar música")
+    print("2. Listar todas as músicas")
+    print("3. Remover música")
+    print("4. Buscar música")
+    print("5. Mostrar duração total")
+    print("6. Avançar / Voltar")
+    print("7. Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        id_musica = int(input("Digite o ID da música: "))
+        nome = input("Digite o nome da música: ")
+        artista = input("Digite o artista: ")
+        duracao = float(input("Digite a duração em minutos: "))
+
+        playlist.adicionar(id_musica, nome, artista, duracao)
+
+    elif opcao == "2":
+        playlist.listar()
+
+    elif opcao == "3":
+        id_musica = int(input("Digite o ID da música que deseja remover: "))
+        playlist.remover(id_musica)
+
+    elif opcao == "4":
+        texto = input("Digite o nome da música ou artista: ")
+        playlist.buscar(texto)
+
+    elif opcao == "5":
+        playlist.duracao_total()
+
+    elif opcao == "6":
+        print("\n1. Avançar para a próxima música")
+        print("2. Voltar para a música anterior")
+
+        escolha = input("Escolha: ")
+
+        if escolha == "1":
+            playlist.avancar()
+        elif escolha == "2":
+            playlist.voltar()
+        else:
+            print("Opção inválida.")
+
+    elif opcao == "7":
+        print("Programa encerrado.")
+        break
+
+    else:
+        print("Opção inválida.")

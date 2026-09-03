@@ -1,0 +1,115 @@
+class No:
+    def __init__(self, id):
+        self.id = id
+        self.bastao = False
+        self.proximo = None
+
+
+class ListaCircular:
+    def __init__(self):
+        self.inicio = None
+
+    def adicionar(self, id):
+        novo = No(id)
+
+        if self.inicio is None:
+            self.inicio = novo
+            novo.proximo = novo
+        else:
+            atual = self.inicio
+
+            while atual.proximo != self.inicio:
+                atual = atual.proximo
+
+            atual.proximo = novo
+            novo.proximo = self.inicio
+
+        print(f"Atleta {id} adicionado!")
+
+    def remover(self, id):
+        if self.inicio is None:
+            print("A lista está vazia!")
+            return
+
+        atual = self.inicio
+        anterior = None
+
+        while True:
+            if atual.id == id:
+
+                if atual.proximo == self.inicio:
+                    self.inicio = None
+
+                elif atual == self.inicio:
+                    ultimo = self.inicio
+
+                    while ultimo.proximo != self.inicio:
+                        ultimo = ultimo.proximo
+
+                    self.inicio = atual.proximo
+                    ultimo.proximo = self.inicio
+
+                else:
+                    anterior.proximo = atual.proximo
+
+                print(f"Atleta {id} removido!")
+                return
+
+            anterior = atual
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print(f"Atleta {id} não encontrado!")
+
+    def mostrar(self):
+        if self.inicio is None:
+            print("Lista vazia!")
+            return
+
+        atual = self.inicio
+
+        while True:
+            print(f"Atleta {atual.id} - Bastão: {atual.bastao}")
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+    def simular(self, voltas):
+        if self.inicio is None:
+            print("Não há atletas na lista!")
+            return
+
+        atual = self.inicio
+        atual.bastao = True
+
+        for turno in range(1, voltas + 1):
+            print(f"Turno {turno}: Atleta {atual.id} está com o bastão.")
+
+            atual.bastao = False
+            atual = atual.proximo
+            atual.bastao = True
+
+
+time = ListaCircular()
+
+time.adicionar(1)
+time.adicionar(2)
+time.adicionar(3)
+time.adicionar(4)
+time.adicionar(5)
+
+print("ATLETAS DO TIME")
+time.mostrar()
+
+print("SIMULAÇÃO DO BASTÃO")
+time.simular(15)
+
+print("REMOVENDO ATLETA 3")
+time.remover(3)
+
+print("ATLETAS APÓS REMOÇÃO")
+time.mostrar()

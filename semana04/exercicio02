@@ -9,44 +9,57 @@ class Paciente:
         self.proximo = None
 
 
-class FilaPacientes:
+class FilaClinica:
     def __init__(self):
         self.inicio = None
         self.fim = None
 
-    # Cadastrar paciente no final
-    def cadastrar(self, codigo, nome, idade, prioridade):
+    # 1. Cadastrar paciente
+    def cadastrar(self):
+        codigo = int(input("Código: "))
+        nome = input("Nome: ")
+        idade = int(input("Idade: "))
+
+        print("\nEscolha a prioridade:")
+        print("1 - Emergência")
+        print("2 - Muito urgente")
+        print("3 - Urgente")
+        print("4 - Pouco urgente")
+        print("5 - Não urgente")
+
+        opcao = int(input("Prioridade: "))
+
+        prioridades = {
+            1: "Emergência",
+            2: "Muito urgente",
+            3: "Urgente",
+            4: "Pouco urgente",
+            5: "Não urgente"
+        }
+
+        if opcao not in prioridades:
+            print("Prioridade inválida!")
+            return
+
+        prioridade = prioridades[opcao]
+
         novo = Paciente(codigo, nome, idade, prioridade)
 
+        # Lista vazia
         if self.inicio is None:
             self.inicio = novo
             self.fim = novo
+
+        # Coloca no final
         else:
             novo.anterior = self.fim
             self.fim.proximo = novo
             self.fim = novo
 
-        print("Paciente cadastrado!")
+        print("\nPaciente cadastrado com sucesso!")
 
-    # Listar do início para o fim
-    def listar(self):
-        if self.inicio is None:
-            print("Fila vazia.")
-            return
-
-        atual = self.inicio
-
-        while atual is not None:
-            print("-------------------------")
-            print("Código:", atual.codigo)
-            print("Nome:", atual.nome)
-            print("Idade:", atual.idade)
-            print("Prioridade:", atual.prioridade)
-
-            atual = atual.proximo
-
-    # Buscar paciente
-    def buscar(self, codigo):
+    # 3. Localizar paciente pelo código
+    def localizar(self, codigo):
         atual = self.inicio
 
         while atual is not None:
@@ -57,46 +70,152 @@ class FilaPacientes:
 
         return None
 
-    # Remover paciente
+    # Remover um paciente específico
     def remover(self, codigo):
-        atual = self.buscar(codigo)
+        paciente = self.localizar(codigo)
 
-        if atual is None:
-            print("Paciente não encontrado.")
+        if paciente is None:
+            print("Paciente não encontrado!")
             return
 
-        # Se for o único
-        if atual.anterior is None and atual.proximo is None:
+        # Único paciente da lista
+        if paciente.anterior is None and paciente.proximo is None:
             self.inicio = None
             self.fim = None
 
-        # Se for o primeiro
-        elif atual.anterior is None:
-            self.inicio = atual.proximo
-            atual.proximo.anterior = None
+        # Primeiro paciente
+        elif paciente.anterior is None:
+            self.inicio = paciente.proximo
+            paciente.proximo.anterior = None
 
-        # Se for o último
-        elif atual.proximo is None:
-            self.fim = atual.anterior
-            atual.anterior.proximo = None
+        # Último paciente
+        elif paciente.proximo is None:
+            self.fim = paciente.anterior
+            paciente.anterior.proximo = None
 
-        # Se estiver no meio
+        # Paciente no meio
         else:
-            atual.anterior.proximo = atual.proximo
-            atual.proximo.anterior = atual.anterior
+            paciente.anterior.proximo = paciente.proximo
+            paciente.proximo.anterior = paciente.anterior
 
-        print("Paciente removido!")
+        print("Paciente removido com sucesso!")
 
-    # Listar do fim para o início
-    def listar_inverso(self):
+    # 4. Atender paciente mais urgente
+    def atender_mais_urgente(self):
+
+        prioridades = [
+            "Emergência",
+            "Muito urgente",
+            "Urgente",
+            "Pouco urgente",
+            "Não urgente"
+        ]
+
+        for prioridade in prioridades:
+
+            atual = self.inicio
+
+            while atual is not None:
+
+                if atual.prioridade == prioridade:
+
+                    print("\nPaciente atendido:")
+                    print("Código:", atual.codigo)
+                    print("Nome:", atual.nome)
+                    print("Idade:", atual.idade)
+                    print("Prioridade:", atual.prioridade)
+
+                    self.remover(atual.codigo)
+                    return
+
+                atual = atual.proximo
+
+        print("Não existem pacientes aguardando atendimento.")
+
+    # 5. Listar do primeiro para o último
+    def listar_inicio_fim(self):
+
+        if self.inicio is None:
+            print("Fila vazia!")
+            return
+
+        atual = self.inicio
+
+        print("\n--- PACIENTES ---")
+
+        while atual is not None:
+            print("----------------------")
+            print("Código:", atual.codigo)
+            print("Nome:", atual.nome)
+            print("Idade:", atual.idade)
+            print("Prioridade:", atual.prioridade)
+
+            atual = atual.proximo
+
+    # 6. Listar por prioridade
+    def listar_por_prioridade(self):
+
+        if self.inicio is None:
+            print("Fila vazia!")
+            return
+
+        print("\nEscolha a prioridade:")
+        print("1 - Emergência")
+        print("2 - Muito urgente")
+        print("3 - Urgente")
+        print("4 - Pouco urgente")
+        print("5 - Não urgente")
+
+        opcao = int(input("Prioridade: "))
+
+        prioridades = {
+            1: "Emergência",
+            2: "Muito urgente",
+            3: "Urgente",
+            4: "Pouco urgente",
+            5: "Não urgente"
+        }
+
+        if opcao not in prioridades:
+            print("Prioridade inválida!")
+            return
+
+        prioridade_escolhida = prioridades[opcao]
+
+        atual = self.inicio
+        encontrou = False
+
+        print("\n---", prioridade_escolhida.upper(), "---")
+
+        while atual is not None:
+
+            if atual.prioridade == prioridade_escolhida:
+                print("----------------------")
+                print("Código:", atual.codigo)
+                print("Nome:", atual.nome)
+                print("Idade:", atual.idade)
+                print("Prioridade:", atual.prioridade)
+
+                encontrou = True
+
+            atual = atual.proximo
+
+        if not encontrou:
+            print("Nenhum paciente possui essa prioridade.")
+
+    # 7. Listar do último para o primeiro
+    def listar_fim_inicio(self):
+
         if self.fim is None:
-            print("Fila vazia.")
+            print("Fila vazia!")
             return
 
         atual = self.fim
 
+        print("\n--- PACIENTES DO ÚLTIMO PARA O PRIMEIRO ---")
+
         while atual is not None:
-            print("-------------------------")
+            print("----------------------")
             print("Código:", atual.codigo)
             print("Nome:", atual.nome)
             print("Idade:", atual.idade)
@@ -104,32 +223,92 @@ class FilaPacientes:
 
             atual = atual.anterior
 
+    # 8. Quantidade de pacientes
+    def quantidade(self):
 
-# Programa principal
+        contador = 0
+        atual = self.inicio
 
-fila = FilaPacientes()
+        while atual is not None:
+            contador += 1
+            atual = atual.proximo
 
-fila.cadastrar(1, "Carlos", 18, 1)
-fila.cadastrar(2, "João", 45, 2)
-fila.cadastrar(3, "Maria", 70, 3)
-fila.cadastrar(4, "Pedro", 32, 1)
+        return contador
 
-print("\nFILA:")
-fila.listar()
 
-print("\nFILA AO CONTRÁRIO:")
-fila.listar_inverso()
+# ---------------------------------
+# PROGRAMA PRINCIPAL
+# ---------------------------------
 
-print("\nBUSCANDO PACIENTE:")
-paciente = fila.buscar(3)
+fila = FilaClinica()
 
-if paciente is not None:
-    print("Paciente encontrado:", paciente.nome)
-else:
-    print("Paciente não encontrado.")
+while True:
 
-print("\nREMOVENDO PACIENTE 2:")
-fila.remover(2)
+    print("\n==============================")
+    print("       CLÍNICA SANTA MARTA")
+    print("==============================")
+    print("1 - Cadastrar paciente")
+    print("2 - Remover paciente")
+    print("3 - Localizar paciente")
+    print("4 - Atender mais urgente")
+    print("5 - Listar do primeiro ao último")
+    print("6 - Listar por prioridade")
+    print("7 - Listar do último ao primeiro")
+    print("8 - Quantidade de pacientes")
+    print("0 - Sair")
+    print("==============================")
 
-print("\nFILA ATUALIZADA:")
-fila.listar()
+    opcao = int(input("Escolha uma opção: "))
+
+    # 1
+    if opcao == 1:
+        fila.cadastrar()
+
+    # 2
+    elif opcao == 2:
+        codigo = int(input("Digite o código do paciente: "))
+        fila.remover(codigo)
+
+    # 3
+    elif opcao == 3:
+        codigo = int(input("Digite o código do paciente: "))
+
+        paciente = fila.localizar(codigo)
+
+        if paciente is not None:
+            print("\nPaciente encontrado!")
+            print("Código:", paciente.codigo)
+            print("Nome:", paciente.nome)
+            print("Idade:", paciente.idade)
+            print("Prioridade:", paciente.prioridade)
+        else:
+            print("Paciente não encontrado!")
+
+    # 4
+    elif opcao == 4:
+        fila.atender_mais_urgente()
+
+    # 5
+    elif opcao == 5:
+        fila.listar_inicio_fim()
+
+    # 6
+    elif opcao == 6:
+        fila.listar_por_prioridade()
+
+    # 7
+    elif opcao == 7:
+        fila.listar_fim_inicio()
+
+    # 8
+    elif opcao == 8:
+        print("\nQuantidade de pacientes aguardando:",
+              fila.quantidade())
+
+    # 0
+    elif opcao == 0:
+        print("Programa encerrado.")
+        break
+
+    else:
+        print("Opção inválida!")

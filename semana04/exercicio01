@@ -1,0 +1,213 @@
+class Aluno:
+    def __init__(self, matricula, nome, nota):
+        self.matricula = matricula
+        self.nome = nome
+        self.situacao = True
+        self.nota = nota
+        self.proximo = None
+
+
+class ListaAlunos:
+    def __init__(self):
+        self.inicio = None
+
+    # Cadastrar aluno no final
+    def cadastrar(self, matricula, nome, nota):
+        novo = Aluno(matricula, nome, nota)
+
+        if self.inicio is None:
+            self.inicio = novo
+        else:
+            atual = self.inicio
+
+            while atual.proximo is not None:
+                atual = atual.proximo
+
+            atual.proximo = novo
+
+        print("Aluno cadastrado com sucesso!")
+
+    # Listar todos
+    def listar_todos(self):
+        if self.inicio is None:
+            print("Nenhum aluno cadastrado.")
+            return
+
+        atual = self.inicio
+
+        while atual is not None:
+            print("-------------------------")
+            print("Matrícula:", atual.matricula)
+            print("Nome:", atual.nome)
+            print("Situação:", "Ativo" if atual.situacao else "Desativado")
+            print("Nota final:", atual.nota)
+
+            atual = atual.proximo
+
+    # Listar somente ativos
+    def listar_ativos(self):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.situacao == True:
+                print("-------------------------")
+                print("Matrícula:", atual.matricula)
+                print("Nome:", atual.nome)
+                print("Nota final:", atual.nota)
+
+            atual = atual.proximo
+
+    # Listar somente desativados
+    def listar_desativados(self):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.situacao == False:
+                print("-------------------------")
+                print("Matrícula:", atual.matricula)
+                print("Nome:", atual.nome)
+                print("Nota final:", atual.nota)
+
+            atual = atual.proximo
+
+    # Buscar aluno pela matrícula
+    def buscar(self, matricula):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.matricula == matricula:
+                return atual
+
+            atual = atual.proximo
+
+        return None
+
+    # Alterar nota
+    def alterar_nota(self, matricula, nova_nota):
+        aluno = self.buscar(matricula)
+
+        if aluno is not None:
+            aluno.nota = nova_nota
+            print("Nota alterada com sucesso!")
+        else:
+            print("Aluno não encontrado.")
+
+    # Alterar situação
+    def alterar_situacao(self, matricula):
+        aluno = self.buscar(matricula)
+
+        if aluno is not None:
+            aluno.situacao = not aluno.situacao
+            print("Situação alterada com sucesso!")
+        else:
+            print("Aluno não encontrado.")
+
+    # Remover aluno
+    def remover(self, matricula):
+        atual = self.inicio
+        anterior = None
+
+        while atual is not None:
+
+            if atual.matricula == matricula:
+
+                # Se for o primeiro
+                if anterior is None:
+                    self.inicio = atual.proximo
+
+                # Se estiver no meio ou no final
+                else:
+                    anterior.proximo = atual.proximo
+
+                print("Aluno removido com sucesso!")
+                return
+
+            anterior = atual
+            atual = atual.proximo
+
+        print("Aluno não encontrado.")
+
+    # Quantidade de alunos
+    def quantidade(self):
+        contador = 0
+        atual = self.inicio
+
+        while atual is not None:
+            contador += 1
+            atual = atual.proximo
+
+        return contador
+
+    # Média da turma
+    def media_turma(self):
+        if self.inicio is None:
+            return 0
+
+        soma = 0
+        contador = 0
+        atual = self.inicio
+
+        while atual is not None:
+            soma += atual.nota
+            contador += 1
+            atual = atual.proximo
+
+        return soma / contador
+
+    # Média dos alunos ativos
+    def media_ativos(self):
+        soma = 0
+        contador = 0
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.situacao == True:
+                soma += atual.nota
+                contador += 1
+
+            atual = atual.proximo
+
+        if contador == 0:
+            return 0
+
+        return soma / contador
+
+
+# Programa principal
+
+lista = ListaAlunos()
+
+lista.cadastrar(1, "Carlos", 8.5)
+lista.cadastrar(2, "João", 7.0)
+lista.cadastrar(3, "Maria", 9.0)
+lista.cadastrar(4, "Pedro", 6.5)
+
+print("\nTODOS OS ALUNOS:")
+lista.listar_todos()
+
+print("\nALUNOS ATIVOS:")
+lista.listar_ativos()
+
+print("\nDESATIVANDO O ALUNO 2:")
+lista.alterar_situacao(2)
+
+print("\nALUNOS DESATIVADOS:")
+lista.listar_desativados()
+
+print("\nALTERANDO NOTA DO ALUNO 3:")
+lista.alterar_nota(3, 10)
+
+print("\nQUANTIDADE DE ALUNOS:")
+print(lista.quantidade())
+
+print("\nMÉDIA DA TURMA:")
+print(lista.media_turma())
+
+print("\nMÉDIA DOS ALUNOS ATIVOS:")
+print(lista.media_ativos())
+
+print("\nREMOVENDO ALUNO 4:")
+lista.remover(4)
+
+print("\nLISTA FINAL:")
+lista.listar_todos()

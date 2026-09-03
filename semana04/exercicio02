@@ -1,0 +1,135 @@
+class Paciente:
+    def __init__(self, codigo, nome, idade, prioridade):
+        self.codigo = codigo
+        self.nome = nome
+        self.idade = idade
+        self.prioridade = prioridade
+
+        self.anterior = None
+        self.proximo = None
+
+
+class FilaPacientes:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    # Cadastrar paciente no final
+    def cadastrar(self, codigo, nome, idade, prioridade):
+        novo = Paciente(codigo, nome, idade, prioridade)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+        else:
+            novo.anterior = self.fim
+            self.fim.proximo = novo
+            self.fim = novo
+
+        print("Paciente cadastrado!")
+
+    # Listar do início para o fim
+    def listar(self):
+        if self.inicio is None:
+            print("Fila vazia.")
+            return
+
+        atual = self.inicio
+
+        while atual is not None:
+            print("-------------------------")
+            print("Código:", atual.codigo)
+            print("Nome:", atual.nome)
+            print("Idade:", atual.idade)
+            print("Prioridade:", atual.prioridade)
+
+            atual = atual.proximo
+
+    # Buscar paciente
+    def buscar(self, codigo):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.codigo == codigo:
+                return atual
+
+            atual = atual.proximo
+
+        return None
+
+    # Remover paciente
+    def remover(self, codigo):
+        atual = self.buscar(codigo)
+
+        if atual is None:
+            print("Paciente não encontrado.")
+            return
+
+        # Se for o único
+        if atual.anterior is None and atual.proximo is None:
+            self.inicio = None
+            self.fim = None
+
+        # Se for o primeiro
+        elif atual.anterior is None:
+            self.inicio = atual.proximo
+            atual.proximo.anterior = None
+
+        # Se for o último
+        elif atual.proximo is None:
+            self.fim = atual.anterior
+            atual.anterior.proximo = None
+
+        # Se estiver no meio
+        else:
+            atual.anterior.proximo = atual.proximo
+            atual.proximo.anterior = atual.anterior
+
+        print("Paciente removido!")
+
+    # Listar do fim para o início
+    def listar_inverso(self):
+        if self.fim is None:
+            print("Fila vazia.")
+            return
+
+        atual = self.fim
+
+        while atual is not None:
+            print("-------------------------")
+            print("Código:", atual.codigo)
+            print("Nome:", atual.nome)
+            print("Idade:", atual.idade)
+            print("Prioridade:", atual.prioridade)
+
+            atual = atual.anterior
+
+
+# Programa principal
+
+fila = FilaPacientes()
+
+fila.cadastrar(1, "Carlos", 18, 1)
+fila.cadastrar(2, "João", 45, 2)
+fila.cadastrar(3, "Maria", 70, 3)
+fila.cadastrar(4, "Pedro", 32, 1)
+
+print("\nFILA:")
+fila.listar()
+
+print("\nFILA AO CONTRÁRIO:")
+fila.listar_inverso()
+
+print("\nBUSCANDO PACIENTE:")
+paciente = fila.buscar(3)
+
+if paciente is not None:
+    print("Paciente encontrado:", paciente.nome)
+else:
+    print("Paciente não encontrado.")
+
+print("\nREMOVENDO PACIENTE 2:")
+fila.remover(2)
+
+print("\nFILA ATUALIZADA:")
+fila.listar()

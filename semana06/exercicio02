@@ -1,0 +1,102 @@
+class Parada:
+    def __init__(self, nome):
+        self.nome = nome
+        self.proximo = None
+
+
+class Onibus:
+    def __init__(self):
+        self.inicio = None
+
+    def adicionar(self, nome):
+        nova = Parada(nome)
+
+        if self.inicio is None:
+            self.inicio = nova
+            nova.proximo = nova
+        else:
+            atual = self.inicio
+
+            while atual.proximo != self.inicio:
+                atual = atual.proximo
+
+            atual.proximo = nova
+            nova.proximo = self.inicio
+
+   
+    def remover(self, nome):
+        if self.inicio is None:
+            return
+
+        atual = self.inicio
+        anterior = None
+
+        while True:
+            if atual.nome == nome:
+                break
+
+            anterior = atual
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                print("Parada não encontrada.")
+                return
+
+       
+        if atual.proximo == atual:
+            self.inicio = None
+
+        
+        elif atual == self.inicio:
+            ultimo = self.inicio
+
+            while ultimo.proximo != self.inicio:
+                ultimo = ultimo.proximo
+
+            self.inicio = atual.proximo
+            ultimo.proximo = self.inicio
+
+        else:
+            anterior.proximo = atual.proximo
+
+   
+    def simular(self, voltas):
+        if self.inicio is None:
+            print("Não existem paradas.")
+            return
+
+        atual = self.inicio
+
+        for volta in range(voltas):
+            print("\nVolta", volta + 1)
+
+            inicio_volta = atual
+
+            while True:
+                print("Ônibus passou pela parada:", atual.nome)
+
+                atual = atual.proximo
+
+                if atual == inicio_volta:
+                    break
+
+
+
+onibus = Onibus()
+
+
+onibus.adicionar("Parada 1")
+onibus.adicionar("Parada 2")
+onibus.adicionar("Parada 3")
+onibus.adicionar("Parada 4")
+onibus.adicionar("Parada 5")
+
+print("PERCURSO DO ÔNIBUS:")
+onibus.simular(2)
+
+
+print("\nRemovendo a Parada 3...")
+onibus.remover("Parada 3")
+
+print("\nPERCURSO APÓS A REMOÇÃO:")
+onibus.simular(1)

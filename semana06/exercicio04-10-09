@@ -1,0 +1,107 @@
+class No:
+    def __init__(self, nome, idade, prioridade):
+        self.nome = nome
+        self.idade = idade
+        self.prioridade = prioridade
+        self.anterior = None
+        self.proximo = None
+
+
+class Triagem:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    def inserir(self, nome, idade, prioridade):
+        novo = No(nome, idade, prioridade)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+            novo.proximo = novo
+            novo.anterior = novo
+        else:
+            novo.proximo = self.inicio
+            novo.anterior = self.fim
+
+            self.fim.proximo = novo
+            self.inicio.anterior = novo
+
+            self.fim = novo
+
+    def remover(self, paciente):
+        if self.inicio is None:
+            return
+
+        if self.inicio == self.fim:
+            self.inicio = None
+            self.fim = None
+        else:
+            paciente.anterior.proximo = paciente.proximo
+            paciente.proximo.anterior = paciente.anterior
+
+            if paciente == self.inicio:
+                self.inicio = paciente.proximo
+
+            if paciente == self.fim:
+                self.fim = paciente.anterior
+
+    def mostrar(self):
+        if self.inicio is None:
+            print("Fila vazia.")
+            return
+
+        atual = self.inicio
+
+        while True:
+            print(atual.nome, "-", atual.idade, "anos -", atual.prioridade)
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+    def atender(self):
+        while self.inicio is not None:
+
+            prioridade = ["emergência", "urgente", "normal"]
+
+            paciente_escolhido = None
+
+            for prioridade_atual in prioridade:
+
+                atual = self.inicio
+
+                while True:
+                    if atual.prioridade == prioridade_atual:
+                        paciente_escolhido = atual
+                        break
+
+                    atual = atual.proximo
+
+                    if atual == self.inicio:
+                        break
+
+                if paciente_escolhido is not None:
+                    break
+
+            print("Atendendo:", paciente_escolhido.nome,
+                  "-", paciente_escolhido.prioridade)
+
+            self.remover(paciente_escolhido)
+
+
+triagem = Triagem()
+
+triagem.inserir("Carlos", 18, "normal")
+triagem.inserir("João", 35, "urgente")
+triagem.inserir("Maria", 62, "emergência")
+triagem.inserir("Pedro", 25, "normal")
+triagem.inserir("Ana", 40, "urgente")
+
+print("Pacientes na fila:")
+triagem.mostrar()
+
+print("\nAtendimento:")
+
+triagem.atender()

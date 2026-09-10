@@ -1,0 +1,80 @@
+import random
+
+
+class No:
+    def __init__(self, guerreiro):
+        self.guerreiro = guerreiro
+        self.anterior = None
+        self.proximo = None
+
+
+class Roleta:
+    def __init__(self):
+        self.inicio = None
+        self.tamanho = 0
+
+    def adicionar(self, guerreiro):
+        novo = No(guerreiro)
+
+        if self.inicio is None:
+            self.inicio = novo
+            novo.proximo = novo
+            novo.anterior = novo
+        else:
+            ultimo = self.inicio.anterior
+
+            novo.proximo = self.inicio
+            novo.anterior = ultimo
+
+            ultimo.proximo = novo
+            self.inicio.anterior = novo
+
+        self.tamanho += 1
+
+    def remover(self, no):
+        if self.tamanho == 1:
+            self.inicio = None
+        else:
+            no.anterior.proximo = no.proximo
+            no.proximo.anterior = no.anterior
+
+            if no == self.inicio:
+                self.inicio = no.proximo
+
+        self.tamanho -= 1
+
+    def jogar(self):
+        atual = self.inicio
+
+        while self.tamanho > 1:
+
+            # Escolhe aleatoriamente a posição do guerreiro
+            passos = random.randint(0, self.tamanho - 1)
+
+            # Percorre a lista
+            for i in range(passos):
+                atual = atual.proximo
+
+            print("Guerreiro eliminado:", atual.guerreiro)
+
+            proximo = atual.proximo
+
+            self.remover(atual)
+
+            atual = proximo
+
+        print("Sobrevivente:", self.inicio.guerreiro)
+
+
+def roleta_russa(quantidade):
+    jogo = Roleta()
+
+    for i in range(1, quantidade + 1):
+        jogo.adicionar("Guerreiro " + str(i))
+
+    jogo.jogar()
+
+
+quantidade = int(input("Digite a quantidade de guerreiros: "))
+
+roleta_russa(quantidade)

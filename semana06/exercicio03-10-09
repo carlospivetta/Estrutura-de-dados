@@ -1,0 +1,84 @@
+class No:
+    def __init__(self, nome):
+        self.nome = nome
+        self.proximo = None
+
+
+class Rodizio:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    def adicionar(self, nome):
+        novo = No(nome)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+            novo.proximo = self.inicio
+        else:
+            novo.proximo = self.inicio
+            self.fim.proximo = novo
+            self.fim = novo
+
+    def remover(self, nome):
+        if self.inicio is None:
+            print("Não há clientes.")
+            return
+
+        atual = self.inicio
+        anterior = self.fim
+
+        while True:
+            if atual.nome == nome:
+
+                if atual == self.inicio and atual == self.fim:
+                    self.inicio = None
+                    self.fim = None
+
+                elif atual == self.inicio:
+                    self.inicio = atual.proximo
+                    self.fim.proximo = self.inicio
+
+                elif atual == self.fim:
+                    self.fim = anterior
+                    self.fim.proximo = self.inicio
+
+                else:
+                    anterior.proximo = atual.proximo
+
+                print(nome, "saiu do rodízio.")
+                return
+
+            anterior = atual
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print("Cliente não encontrado.")
+
+    def passar_pizza(self, voltas):
+        if self.inicio is None:
+            print("Não há clientes.")
+            return
+
+        atual = self.inicio
+
+        for i in range(voltas):
+            print("Pizza para:", atual.nome)
+            atual = atual.proximo
+
+
+rodizio = Rodizio()
+
+rodizio.adicionar("Carlos")
+rodizio.adicionar("João")
+rodizio.adicionar("Maria")
+rodizio.adicionar("Pedro")
+
+rodizio.remover("Maria")
+
+print("\nPassando a pizza:")
+
+rodizio.passar_pizza(10)

@@ -1,0 +1,144 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.anterior = None
+        self.proximo = None
+
+
+class ListaDupla:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    def inserir(self, valor):
+        novo = No(valor)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+        else:
+            novo.proximo = self.inicio
+            self.inicio.anterior = novo
+            self.inicio = novo
+
+    def imprimir(self):
+        atual = self.inicio
+
+        while atual is not None:
+            print(atual.valor, end=" ")
+            atual = atual.proximo
+
+        print()
+
+    def buscar(self, valor):
+        atual = self.inicio
+
+        while atual is not None:
+            if atual.valor == valor:
+                return atual
+            atual = atual.proximo
+
+        return None
+
+    def remover(self, valor):
+        atual = self.buscar(valor)
+
+        if atual is None:
+            print("Valor não encontrado.")
+            return
+
+        if atual.anterior is None:
+            self.inicio = atual.proximo
+        else:
+            atual.anterior.proximo = atual.proximo
+
+        if atual.proximo is None:
+            self.fim = atual.anterior
+        else:
+            atual.proximo.anterior = atual.anterior
+
+    def inserir_fim(self, valor):
+        novo = No(valor)
+
+        if self.fim is None:
+            self.inicio = novo
+            self.fim = novo
+        else:
+            novo.anterior = self.fim
+            self.fim.proximo = novo
+            self.fim = novo
+
+    def inserir_ordenado(self, valor):
+        novo = No(valor)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+            return
+
+        if valor <= self.inicio.valor:
+            novo.proximo = self.inicio
+            self.inicio.anterior = novo
+            self.inicio = novo
+            return
+
+        atual = self.inicio
+
+        while atual.proximo is not None and atual.proximo.valor < valor:
+            atual = atual.proximo
+
+        if atual.proximo is None:
+            novo.anterior = atual
+            atual.proximo = novo
+            self.fim = novo
+        else:
+            novo.proximo = atual.proximo
+            novo.anterior = atual
+
+            atual.proximo.anterior = novo
+            atual.proximo = novo
+
+    def imprimir_inverso(self):
+        atual = self.fim
+
+        while atual is not None:
+            print(atual.valor, end=" ")
+            atual = atual.anterior
+
+        print()
+
+
+lista = ListaDupla()
+
+lista.inserir(30)
+lista.inserir(20)
+lista.inserir(10)
+
+print("Lista:")
+lista.imprimir()
+
+print("Busca:")
+if lista.buscar(20):
+    print("Encontrado")
+else:
+    print("Não encontrado")
+
+lista.inserir_fim(40)
+
+print("Inserindo no fim:")
+lista.imprimir()
+
+lista.inserir_ordenado(25)
+lista.inserir_ordenado(5)
+lista.inserir_ordenado(50)
+
+print("Lista ordenada:")
+lista.imprimir()
+
+lista.remover(25)
+
+print("Depois da remoção:")
+lista.imprimir()
+
+print("Lista inversa:")
+lista.imprimir_inverso()

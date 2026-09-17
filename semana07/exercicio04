@@ -1,0 +1,100 @@
+class SalaPartidas:
+    def __init__(self):
+        self.fila = []
+
+    def adicionar_jogador(self, nome):
+        self.fila.append(nome)
+        print(f"{nome} entrou na fila.")
+
+    def simular_rodada(self):
+        if len(self.fila) > 0:
+            jogador = self.fila.pop(0)
+
+            print(f"Jogando: {jogador}")
+
+            self.fila.append(jogador)
+
+            print("Fila:", self.fila)
+
+        else:
+            print("A fila está vazia.")
+
+    def simular_varias_rodadas(self, quantidade):
+        if len(self.fila) == 0:
+            print("A fila está vazia.")
+            return
+
+        for rodada in range(1, quantidade + 1):
+
+            jogador = self.fila.pop(0)
+
+            print(f"\nRodada {rodada}")
+            print(f"Jogando: {jogador}")
+
+            self.fila.append(jogador)
+
+            print("Fila:", self.fila)
+
+    def mostrar_fila(self):
+        if len(self.fila) > 0:
+
+            print("\nFila de jogadores:")
+
+            for i in range(len(self.fila)):
+                print(f"{i + 1} - {self.fila[i]}")
+
+        else:
+            print("A fila está vazia.")
+
+    def mostrar_proximo(self):
+        if len(self.fila) > 0:
+            print(f"Próximo a jogar: {self.fila[0]}")
+        else:
+            print("A fila está vazia.")
+
+    def limpar_fila(self):
+        self.fila.clear()
+        print("Fila limpa.")
+
+
+sala = SalaPartidas()
+
+while True:
+
+    print("\n--- SALA DE PARTIDAS ---")
+    print("1 - Adicionar jogador")
+    print("2 - Simular 1 rodada")
+    print("3 - Simular N rodadas")
+    print("4 - Mostrar fila")
+    print("5 - Mostrar próximo")
+    print("6 - Limpar fila")
+    print("7 - Sair")
+
+    opcao = input("Escolha: ")
+
+    if opcao == "1":
+        nome = input("Nome do jogador: ")
+        sala.adicionar_jogador(nome)
+
+    elif opcao == "2":
+        sala.simular_rodada()
+
+    elif opcao == "3":
+        quantidade = int(input("Quantas rodadas? "))
+        sala.simular_varias_rodadas(quantidade)
+
+    elif opcao == "4":
+        sala.mostrar_fila()
+
+    elif opcao == "5":
+        sala.mostrar_proximo()
+
+    elif opcao == "6":
+        sala.limpar_fila()
+
+    elif opcao == "7":
+        print("Programa encerrado.")
+        break
+
+    else:
+        print("Opção inválida.")

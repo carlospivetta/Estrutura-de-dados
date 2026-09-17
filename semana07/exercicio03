@@ -1,0 +1,34 @@
+garagem = [
+    "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5",
+    "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10",
+    "Carro 11", "Carro 12", "Carro 13", "Carro 14", "Carro 15",
+    "Carro 16", "Carro 17", "Carro 18", "Carro 19", "Carro 20"
+]
+
+print("--- GARAGEM ---")
+
+print("\nCarros estacionados:")
+for carro in garagem:
+    print(carro)
+
+carro_desejado = input("\nDigite o carro que deseja retirar: ")
+
+if carro_desejado in garagem:
+
+    retirados = []
+
+    while garagem[-1] != carro_desejado:
+        carro = garagem.pop()
+        retirados.append(carro)
+
+    # Retira o carro desejado
+    carro = garagem.pop()
+    retirados.append(carro)
+
+    print("\nCarros retirados:")
+
+    for carro in retirados:
+        print(carro)
+
+else:
+    print("Carro não encontrado na garagem.")

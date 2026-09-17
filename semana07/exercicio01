@@ -1,0 +1,48 @@
+fila = []
+
+while True:
+    print("\n--- SUPORTE DE TI ---")
+    print("1 - Registrar chamado")
+    print("2 - Atender chamado")
+    print("3 - Ver fila")
+    print("4 - Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        nome = input("Digite o nome da pessoa: ")
+        fila.append(nome)
+        print(f"Chamado de {nome} registrado com sucesso!")
+
+    elif opcao == "2":
+        if len(fila) > 0:
+            atendido = fila.pop(0)
+            print(f"Atendendo: {atendido}")
+
+            print(f"Chamados aguardando: {len(fila)}")
+
+            if len(fila) > 0:
+                print(f"Próximo chamado: {fila[0]}")
+            else:
+                print("Não há mais chamados aguardando.")
+        else:
+            print("A fila está vazia.")
+
+    elif opcao == "3":
+        if len(fila) > 0:
+            print("\nFila de atendimento:")
+
+            for nome in fila:
+                print(nome)
+
+            print(f"\nTotal aguardando: {len(fila)}")
+            print(f"Próximo: {fila[0]}")
+        else:
+            print("Nenhum chamado aguardando.")
+
+    elif opcao == "4":
+        print("Sistema encerrado.")
+        break
+
+    else:
+        print("Opção inválida.")

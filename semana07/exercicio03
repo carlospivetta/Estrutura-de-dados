@@ -1,34 +1,40 @@
-garagem = [
-    "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5",
-    "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10",
-    "Carro 11", "Carro 12", "Carro 13", "Carro 14", "Carro 15",
-    "Carro 16", "Carro 17", "Carro 18", "Carro 19", "Carro 20"
-]
+class Garagem:
+    def __init__(self):
+        self.carros = []
 
-print("--- GARAGEM ---")
+        for i in range(1, 21):
+            self.carros.append(f"Carro {i}")
 
-print("\nCarros estacionados:")
-for carro in garagem:
-    print(carro)
+    def mostrar_carros(self):
+        print("\nCarros na garagem:")
 
-carro_desejado = input("\nDigite o carro que deseja retirar: ")
+        for carro in self.carros:
+            print(carro)
 
-if carro_desejado in garagem:
+    def retirar_carro(self, carro_desejado):
+        if carro_desejado not in self.carros:
+            print("Carro não encontrado.")
+            return
 
-    retirados = []
+        retirados = []
 
-    while garagem[-1] != carro_desejado:
-        carro = garagem.pop()
+        while self.carros[-1] != carro_desejado:
+            carro = self.carros.pop()
+            retirados.append(carro)
+
+        carro = self.carros.pop()
         retirados.append(carro)
 
-    # Retira o carro desejado
-    carro = garagem.pop()
-    retirados.append(carro)
+        print("\nCarros retirados:")
 
-    print("\nCarros retirados:")
+        for carro in retirados:
+            print(carro)
 
-    for carro in retirados:
-        print(carro)
 
-else:
-    print("Carro não encontrado na garagem.")
+garagem = Garagem()
+
+garagem.mostrar_carros()
+
+carro = input("\nDigite o carro que deseja retirar: ")
+
+garagem.retirar_carro(carro)

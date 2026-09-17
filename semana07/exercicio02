@@ -1,0 +1,45 @@
+pilha = []
+
+while True:
+    print("\n--- PILHA DE OPERAÇÕES ---")
+    print("1 - Inserir operação")
+    print("2 - Retirar última operação (POP)")
+    print("3 - Mostrar última operação inserida (TOPO)")
+    print("4 - Mostrar todas as operações pendentes")
+    print("5 - Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        operacao = input("Digite a operação (ex: 5+3, 7*2): ")
+        pilha.append(operacao)
+        print("Operação inserida na pilha.")
+
+    elif opcao == "2":
+        if len(pilha) > 0:
+            removida = pilha.pop()
+            print(f"Operação removida: {removida}")
+        else:
+            print("A pilha está vazia.")
+
+    elif opcao == "3":
+        if len(pilha) > 0:
+            print(f"Operação no topo: {pilha[-1]}")
+        else:
+            print("A pilha está vazia.")
+
+    elif opcao == "4":
+        if len(pilha) > 0:
+            print("\nOperações pendentes:")
+
+            for operacao in reversed(pilha):
+                print(operacao)
+        else:
+            print("Não há operações pendentes.")
+
+    elif opcao == "5":
+        print("Programa encerrado.")
+        break
+
+    else:
+        print("Opção inválida.")

@@ -1,0 +1,79 @@
+class Sprint:
+    def __init__(self, nome, responsavel):
+        self.nome = nome
+        self.responsavel = responsavel
+        self.proximo = None
+
+
+class ListaSprints:
+    def __init__(self):
+        self.inicio = None
+
+    def inserir(self, nome, responsavel):
+        novo = Sprint(nome, responsavel)
+
+        if self.inicio is None:
+            self.inicio = novo
+        else:
+            atual = self.inicio
+
+            while atual.proximo is not None:
+                atual = atual.proximo
+
+            atual.proximo = novo
+
+    def listar(self):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+
+        while atual is not None:
+            print("Sprint:", atual.nome)
+            print("Responsável:", atual.responsavel)
+            print("--------------------")
+
+            atual = atual.proximo
+
+    def remover(self, nome):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        
+        if self.inicio.nome == nome:
+            self.inicio = self.inicio.proximo
+            print("Sprint removida.")
+            return
+
+        anterior = self.inicio
+        atual = self.inicio.proximo
+
+        while atual is not None:
+            if atual.nome == nome:
+                anterior.proximo = atual.proximo
+                print("Sprint removida.")
+                return
+
+            anterior = atual
+            atual = atual.proximo
+
+        print("Sprint não encontrada.")
+
+
+
+
+lista = ListaSprints()
+
+lista.inserir("Planejamento do Produto", "Ana")
+lista.inserir("Implementação do Backend", "João")
+lista.inserir("Testes Automatizados", "Carla")
+
+print("LISTA ORIGINAL")
+lista.listar()
+
+lista.remover("Planejamento do Produto")
+
+print("\nLISTA APÓS REMOÇÃO")
+lista.listar()

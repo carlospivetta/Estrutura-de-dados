@@ -1,0 +1,140 @@
+class Servidor:
+    def __init__(self, id, nome):
+        self.id = id
+        self.nome = nome
+        self.status = False
+
+        self.anterior = None
+        self.proximo = None
+
+
+class ListaServidores:
+    def __init__(self):
+        self.inicio = None
+        self.fim = None
+
+    def inserir(self, id, nome):
+        novo = Servidor(id, nome)
+
+        if self.inicio is None:
+            self.inicio = novo
+            self.fim = novo
+        else:
+            self.fim.proximo = novo
+            novo.anterior = self.fim
+            self.fim = novo
+
+        print("Servidor inserido.")
+
+    def remover(self, id):
+        atual = self.inicio
+
+        while atual is not None:
+
+            if atual.id == id:
+
+                # Se for o primeiro
+                if atual == self.inicio:
+                    self.inicio = atual.proximo
+
+                    if self.inicio is not None:
+                        self.inicio.anterior = None
+                    else:
+                        self.fim = None
+
+                # Se for o último
+                elif atual == self.fim:
+                    self.fim = atual.anterior
+                    self.fim.proximo = None
+
+                # Se estiver no meio
+                else:
+                    atual.anterior.proximo = atual.proximo
+                    atual.proximo.anterior = atual.anterior
+
+                print("Servidor removido.")
+                return
+
+            atual = atual.proximo
+
+        print("Servidor não encontrado.")
+
+    def ligar(self, id):
+        atual = self.inicio
+
+        while atual is not None:
+
+            if atual.id == id:
+                atual.status = True
+                print("Servidor ligado.")
+                return
+
+            atual = atual.proximo
+
+        print("Servidor não encontrado.")
+
+    def desligar(self, id):
+        atual = self.inicio
+
+        while atual is not None:
+
+            if atual.id == id:
+                atual.status = False
+                print("Servidor desligado.")
+                return
+
+            atual = atual.proximo
+
+        print("Servidor não encontrado.")
+
+    def listar_frente(self):
+        atual = self.inicio
+
+        while atual is not None:
+
+            if atual.status:
+                status = "Ligado"
+            else:
+                status = "Desligado"
+
+            print(atual.id, "-", atual.nome, "-", status)
+
+            atual = atual.proximo
+
+    def listar_tras(self):
+        atual = self.fim
+
+        while atual is not None:
+
+            if atual.status:
+                status = "Ligado"
+            else:
+                status = "Desligado"
+
+            print(atual.id, "-", atual.nome, "-", status)
+
+            atual = atual.anterior
+
+
+
+lista = ListaServidores()
+
+lista.inserir(1, "Servidor Web")
+lista.inserir(2, "Servidor Banco")
+lista.inserir(3, "Servidor Backup")
+
+lista.ligar(1)
+lista.ligar(3)
+
+print("\nFRENTE PARA TRÁS")
+lista.listar_frente()
+
+print("\nTRÁS PARA FRENTE")
+lista.listar_tras()
+
+lista.desligar(1)
+
+lista.remover(2)
+
+print("\nAPÓS REMOVER")
+lista.listar_frente()

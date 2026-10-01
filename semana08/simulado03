@@ -1,0 +1,305 @@
+class Deploy:
+    def __init__(self, nome, duracao, ambiente):
+        self.nome = nome
+        self.duracao = duracao
+        self.ambiente = ambiente
+        self.ativo = False
+
+        self.proximo = None
+
+
+class ListaDeploy:
+    def __init__(self):
+        self.inicio = None
+
+    def adicionar(self, nome, duracao, ambiente):
+        novo = Deploy(nome, duracao, ambiente)
+
+        # Primeiro elemento
+        if self.inicio is None:
+            self.inicio = novo
+            novo.proximo = novo
+
+        else:
+            atual = self.inicio
+
+            # Procura o último
+            while atual.proximo != self.inicio:
+                atual = atual.proximo
+
+            atual.proximo = novo
+            novo.proximo = self.inicio
+
+        print("Deploy adicionado.")
+
+    def listar_todos(self):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+
+        while True:
+
+            if atual.ativo:
+                status = "Ativo"
+            else:
+                status = "Inativo"
+
+            print(
+                atual.nome,
+                "-",
+                atual.duracao,
+                "segundos -",
+                atual.ambiente,
+                "-",
+                status
+            )
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+    def listar_por_ambiente(self):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        ambientes = ["teste", "homologação", "produção"]
+
+        for ambiente in ambientes:
+
+            print("\nAMBIENTE:", ambiente)
+
+            atual = self.inicio
+
+            while True:
+
+                if atual.ambiente == ambiente:
+
+                    if atual.ativo:
+                        status = "Ativo"
+                    else:
+                        status = "Inativo"
+
+                    print(
+                        atual.nome,
+                        "-",
+                        atual.duracao,
+                        "segundos -",
+                        status
+                    )
+
+                atual = atual.proximo
+
+                if atual == self.inicio:
+                    break
+
+    def listar_ativos(self):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+        encontrou = False
+
+        while True:
+
+            if atual.ativo:
+                print(
+                    atual.nome,
+                    "-",
+                    atual.duracao,
+                    "segundos -",
+                    atual.ambiente
+                )
+
+                encontrou = True
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        if not encontrou:
+            print("Nenhum deploy ativo.")
+
+    def tempo_total(self):
+        if self.inicio is None:
+            print("Tempo total: 0 segundos")
+            return
+
+        total = 0
+        atual = self.inicio
+
+        while True:
+            total += atual.duracao
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print("Tempo total:", total, "segundos")
+
+    def ativar(self, nome):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+
+        while True:
+
+            if atual.nome == nome:
+                atual.ativo = True
+                print("Deploy ativado.")
+                return
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print("Deploy não encontrado.")
+
+    def desativar(self, nome):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+
+        while True:
+
+            if atual.nome == nome:
+                atual.ativo = False
+                print("Deploy desativado.")
+                return
+
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print("Deploy não encontrado.")
+
+    def excluir(self, nome):
+        if self.inicio is None:
+            print("Lista vazia.")
+            return
+
+        atual = self.inicio
+        anterior = None
+
+        while True:
+
+            if atual.nome == nome:
+
+                
+                if atual.proximo == atual:
+                    self.inicio = None
+
+                
+                elif atual == self.inicio:
+
+                    ultimo = self.inicio
+
+                    while ultimo.proximo != self.inicio:
+                        ultimo = ultimo.proximo
+
+                    self.inicio = atual.proximo
+                    ultimo.proximo = self.inicio
+
+                else:
+                    anterior.proximo = atual.proximo
+
+                print("Deploy excluído.")
+                return
+
+            anterior = atual
+            atual = atual.proximo
+
+            if atual == self.inicio:
+                break
+
+        print("Deploy não encontrado.")
+
+
+        lista = ListaDeploy()
+
+while True:
+
+    print("\n===== MENU =====")
+    print("1 - Adicionar deploy")
+    print("2 - Listar deploys")
+    print("3 - Exibir tempo total")
+    print("4 - Ativar deploy")
+    print("5 - Desativar deploy")
+    print("6 - Excluir deploy")
+    print("7 - Sair")
+
+    opcao = input("Escolha: ")
+
+    if opcao == "1":
+
+        nome = input("Nome: ")
+        duracao = int(input("Duração em segundos: "))
+
+        ambiente = input(
+            "Ambiente (teste/homologação/produção): "
+        ).lower()
+
+        if ambiente == "teste" or ambiente == "homologação" or ambiente == "produção":
+            lista.adicionar(nome, duracao, ambiente)
+        else:
+            print("Ambiente inválido.")
+
+    elif opcao == "2":
+
+        print("\n1 - Listar todos")
+        print("2 - Listar por ambiente")
+        print("3 - Listar apenas ativos")
+
+        tipo = input("Escolha: ")
+
+        if tipo == "1":
+            lista.listar_todos()
+
+        elif tipo == "2":
+            lista.listar_por_ambiente()
+
+        elif tipo == "3":
+            lista.listar_ativos()
+
+        else:
+            print("Opção inválida.")
+
+    elif opcao == "3":
+
+        lista.tempo_total()
+
+    elif opcao == "4":
+
+        nome = input("Nome do deploy que deseja ativar: ")
+        lista.ativar(nome)
+
+    elif opcao == "5":
+
+        nome = input("Nome do deploy que deseja desativar: ")
+        lista.desativar(nome)
+
+    elif opcao == "6":
+
+        nome = input("Nome do deploy que deseja excluir: ")
+        lista.excluir(nome)
+
+    elif opcao == "7":
+
+        print("Programa encerrado.")
+        break
+
+    else:
+
+        print("Opção inválida.")

@@ -1,0 +1,44 @@
+
+from collections import deque
+
+fila = deque()
+
+while True:
+    print("\n===== FILA DO BANCO =====")
+    print("1 - Adicionar cliente comum")
+    print("2 - Adicionar cliente preferencial")
+    print("3 - Atender cliente")
+    print("4 - Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        nome = input("Nome do cliente: ")
+        fila.append(nome)
+        print("Cliente comum adicionado!")
+
+    elif opcao == "2":
+        nome = input("Nome do cliente preferencial: ")
+        fila.appendleft(nome)
+        print("Cliente preferencial adicionado!")
+
+    elif opcao == "3":
+        if len(fila) > 0:
+            print("Cliente atendido:", fila[0])
+            del fila[0]
+        else:
+            print("Fila vazia!")
+
+    elif opcao == "4":
+        print("Saindo do sistema...")
+        break
+
+    else:
+        print("Opção inválida!")
+
+    print("\nOrdem atual de atendimento:")
+    if len(fila) > 0:
+        for cliente in fila:
+            print(cliente)
+    else:
+        print("Fila vazia!")
